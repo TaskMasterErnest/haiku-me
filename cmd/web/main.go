@@ -28,24 +28,11 @@ func main() {
 		infoLog:  infoLog,
 	}
 
-	// prepping a server
-	mux := http.NewServeMux()
-
-	//serving the static files for frontend
-	fileserver := http.FileServer(http.Dir("./ui/static/"))
-
-	//handling all server functions
-	mux.Handle("/static/", http.StripPrefix("/static", fileserver))
-
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/snippet/view", app.snippetView)
-	mux.HandleFunc("/snippet/create", app.snippetCreate)
-
 	//initializing a struct to house parameters to be served
 	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,
-		Handler:  mux,
+		Handler:  app.routes(), //app.routes() contains the servemux
 	}
 
 	//serving the application
