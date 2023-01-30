@@ -1,22 +1,55 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
+	"os"
 )
 
+//a struct to hold all global dependencies
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+}
+
 func main() {
+
+	addr := flag.String("addr", ":4000", "HTTP network address") //adding flags for the command line
+	flag.Parse()
+
+	//adding custom logs
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ltime|log.Ldate)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ltime|log.Ldate|log.Lshortfile)
+
+	//a struct containing the application dependencies
+	app := &application{
+		errorLog: errorLog,
+		infoLog:  infoLog,
+	}
+
+	// prepping a server
 	mux := http.NewServeMux()
 
+	//serving the static files for frontend
 	fileserver := http.FileServer(http.Dir("./ui/static/"))
 
+	//handling all server functions
 	mux.Handle("/static/", http.StripPrefix("/static", fileserver))
 
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/snippet/view", snippetView)
-	mux.HandleFunc("/snippet/create", snippetCreate)
+	mux.HandleFunc("/", app.home)
+	mux.HandleFunc("/snippet/view", app.snippetView)
+	mux.HandleFunc("/snippet/create", app.snippetCreate)
 
-	log.Println("Starting server on :4000")
-	err := http.ListenAndServe(":4000", mux)
-	log.Fatal(err)
+	//initializing a struct to house parameters to be served
+	srv := &http.Server{
+		Addr:     *addr,
+		ErrorLog: errorLog,
+		Handler:  mux,
+	}
+
+	//serving the application
+	infoLog.Printf("Starting server on %s", *addr)
+	err := srv.ListenAndServe()
+	errorLog.Fatal(err)
 }
