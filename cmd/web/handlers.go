@@ -1,10 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 	"text/template"
+
+	"github.com/TaskMasterErnest/internal/models"
 )
 
 //inject dependencies in to the handlers
@@ -42,7 +45,17 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Display a specific snippet with ID %d...\n", id)
+	snippet, err := app.snippets.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%+v", snippet)
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +70,7 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	//dummy data to put into database
 	title := "Oh snail"
 	content := "Oh snail\nClimb Mount Fuji, \nBut slowly, slowly!\n\n- Kobayashi Issa"
-	expires := 7
+	expires := 40
 
 	id, err := app.snippets.Insert(title, content, expires)
 	if err != nil {
