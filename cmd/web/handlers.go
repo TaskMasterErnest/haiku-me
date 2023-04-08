@@ -14,9 +14,9 @@ import (
 //inject dependencies in to the handlers
 
 type snippetCreateForm struct {
-	Title               string
-	Content             string
-	Expires             int
+	Title               string `form:"title"`
+	Content             string `form:"content"`
+	Expires             int    `form:"expires"`
 	validator.Validator `form:"-"`
 }
 
@@ -82,11 +82,8 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 	}
 
 	form.CheckField(validator.NotBlank(form.Title), "title", "This space cannot be blank")
-
 	form.CheckField(validator.MaxChars(form.Title, 100), "title", "This field cannot be more than 100 characters long")
-
 	form.CheckField(validator.NotBlank(form.Content), "content", "This field cannot be blank")
-
 	form.CheckField(validator.PermittedInt(form.Expires, 1, 7, 365), "expires", "This field must equal 1, 7 or 365")
 
 	if !form.Valid() {
@@ -101,6 +98,8 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		app.serverError(w, err)
 		return
 	}
+
+	app.sessionManager.Put(r.Context(), "flash", "Snippet successfully created!")
 
 	//redirect user to the relevant page for the snippet
 	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
