@@ -81,3 +81,18 @@ func TestSnippetView(t *testing.T) {
 		})
 	}
 }
+
+func TestUserSignup(t *testing.T) {
+	//create application struct containing our mocked dependencies and set up the test server to run end-to-end tests
+	app := newTestApplication(t)
+	ts := newTestServer(t, app.routes())
+	defer ts.Close()
+
+	//make a GET /user/signup request and extract the CSRF token form the response body
+	_, _, body := ts.get(t, "/user/signup")
+	csrfToken := extractCSRFToken(t, body)
+
+	// Log the CSRF token value in our test output using the t.Logf() function.
+	t.Logf("CSRF token is: %q", csrfToken)
+
+}
