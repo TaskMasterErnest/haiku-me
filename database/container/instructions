@@ -1,0 +1,37 @@
+# create a pod environment and publish the ports to be used
+podman pod create \
+--name pod0 \
+--publish 3306:3306 \
+--publish 8080:80
+
+# run the MySQL server
+podman run -d --name mysql-server \
+--pod pod0 \
+-e MYSQL_ROOT_PASSWORD="<your-root-pass>" \
+-e MYSQL_USER=<username> \
+-e MYSQL_PASSWORD="<your-pass>" \
+docker.io/library/mysql:latest
+
+# run the phpmyadmin container
+podman run -d --name phpmyadmin \
+--pod pod0 \
+-e PMA_HOST=127.0.0.1 \
+-e PMA_PORT=3306 \
+docker.io/library/phpmyadmin:latest
+
+
+# exec into the container and start a bash shell
+podman exec -it mysql-server bash
+
+# connect to the MySQL server within the contaner
+mysql -u root -p
+
+# in the container, check if the socket file is available
+ls -l /var/run/mysqld/mysqld.sock
+
+# if not available, create it using the following command
+mkfifo /var/run/mysqld/mysqld.sock
+# The mkfifo command creates a named pipe, also known as a FIFO. A FIFO is a special type of file that allows two processes to communicate with each other by writing and reading data to the file.
+
+# connect to the MySQL server again, it should run this time around
+mysql -u root -p
