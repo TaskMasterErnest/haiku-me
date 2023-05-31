@@ -10,7 +10,7 @@ To run the application;
  
 For a container approach, the commands used here are for Podman. 
 Same commands can be used for Docker but will vary slightly.
-Instruction are in the `/database/container/instruction` file.
+Instructions are in the `/database/container/instruction` file.
 
 
 ### Run the application
