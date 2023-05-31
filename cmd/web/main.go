@@ -18,7 +18,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-//a struct to hold all global dependencies
+// a struct to hold all global dependencies
 type application struct {
 	errorLog       *log.Logger
 	infoLog        *log.Logger

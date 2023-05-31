@@ -84,7 +84,6 @@ func TestSnippetView(t *testing.T) {
 }
 
 func TestUserSignup(t *testing.T) {
-	t.Parallel()
 	app := newTestApplication(t)
 	ts := newTestServer(t, app.routes())
 	defer ts.Close()
@@ -96,6 +95,7 @@ func TestUserSignup(t *testing.T) {
 		validName     = "Bob"
 		validPassword = "validPa$$word"
 		validEmail    = "bob@example.com"
+		formTag       = "<form action='/user/signup' method='POST' novalidate>"
 	)
 
 	tests := []struct {
@@ -113,7 +113,7 @@ func TestUserSignup(t *testing.T) {
 			userEmail:    validEmail,
 			userPassword: validPassword,
 			csrfToken:    validCSRFToken,
-			wantCode:     http.StatusBadRequest,
+			wantCode:     http.StatusSeeOther,
 		},
 		{
 			name:         "Invalid CSRF Token",
@@ -129,7 +129,8 @@ func TestUserSignup(t *testing.T) {
 			userEmail:    validEmail,
 			userPassword: validPassword,
 			csrfToken:    validCSRFToken,
-			wantCode:     http.StatusBadRequest,
+			wantCode:     http.StatusUnprocessableEntity,
+			wantFormTag:  formTag,
 		},
 		{
 			name:         "Empty email",
@@ -137,7 +138,8 @@ func TestUserSignup(t *testing.T) {
 			userEmail:    "",
 			userPassword: validPassword,
 			csrfToken:    validCSRFToken,
-			wantCode:     http.StatusBadRequest,
+			wantCode:     http.StatusUnprocessableEntity,
+			wantFormTag:  formTag,
 		},
 		{
 			name:         "Empty password",
@@ -145,7 +147,8 @@ func TestUserSignup(t *testing.T) {
 			userEmail:    validEmail,
 			userPassword: "",
 			csrfToken:    validCSRFToken,
-			wantCode:     http.StatusBadRequest,
+			wantCode:     http.StatusUnprocessableEntity,
+			wantFormTag:  formTag,
 		},
 		{
 			name:         "Invalid email",
@@ -153,7 +156,8 @@ func TestUserSignup(t *testing.T) {
 			userEmail:    "bob@example.",
 			userPassword: validPassword,
 			csrfToken:    validCSRFToken,
-			wantCode:     http.StatusBadRequest,
+			wantCode:     http.StatusUnprocessableEntity,
+			wantFormTag:  formTag,
 		},
 		{
 			name:         "Short password",
@@ -169,7 +173,8 @@ func TestUserSignup(t *testing.T) {
 			userEmail:    "dupe@example.com",
 			userPassword: validPassword,
 			csrfToken:    validCSRFToken,
-			wantCode:     http.StatusBadRequest,
+			wantCode:     http.StatusUnprocessableEntity,
+			wantFormTag:  formTag,
 		},
 	}
 

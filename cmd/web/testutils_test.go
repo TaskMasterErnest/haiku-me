@@ -18,7 +18,7 @@ import (
 	"github.com/go-playground/form/v4"
 )
 
-//a regular expression to capture the CSRF token from the HTML for the user signup page
+// a regular expression to capture the CSRF token from the HTML for the user signup page
 var csrfTokenRX = regexp.MustCompile("<input type='hidden' name='csrf_token' value='(.+)>")
 
 func extractCSRFToken(t *testing.T, body string) string {
@@ -56,12 +56,12 @@ func newTestApplication(t *testing.T) *application {
 	}
 }
 
-//a custom testServer type which embeds an httptest.Server instance
+// a custom testServer type which embeds an httptest.Server instance
 type testServer struct {
 	*httptest.Server
 }
 
-//a newTestServer helper which initializes and returns a new instance of the testServer type
+// a newTestServer helper which initializes and returns a new instance of the testServer type
 func newTestServer(t *testing.T, h http.Handler) *testServer {
 	ts := httptest.NewTLSServer(h)
 
@@ -82,8 +82,8 @@ func newTestServer(t *testing.T, h http.Handler) *testServer {
 	return &testServer{ts}
 }
 
-//implement a get() method on the custom testServer type.
-//makes a GET request to the given url path using the testServer client and returns the response status code, headers and body
+// implement a get() method on the custom testServer type.
+// makes a GET request to the given url path using the testServer client and returns the response status code, headers and body
 func (ts *testServer) get(t *testing.T, urlPath string) (int, http.Header, string) {
 	rs, err := ts.Client().Get(ts.URL + urlPath)
 	if err != nil {
@@ -100,7 +100,7 @@ func (ts *testServer) get(t *testing.T, urlPath string) (int, http.Header, strin
 	return rs.StatusCode, rs.Header, string(body)
 }
 
-//a postForm method for sending post requests to the test server
+// a postForm method for sending post requests to the test server
 func (ts *testServer) postForm(t *testing.T, urlPath string, form url.Values) (int, http.Header, string) {
 	rs, err := ts.Client().PostForm(ts.URL+urlPath, form)
 	if err != nil {
