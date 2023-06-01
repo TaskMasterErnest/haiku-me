@@ -20,6 +20,7 @@ import (
 
 // a struct to hold all global dependencies
 type application struct {
+	debug          bool
 	errorLog       *log.Logger
 	infoLog        *log.Logger
 	snippets       models.SnippetModelInterface
@@ -33,6 +34,9 @@ func main() {
 
 	addr := flag.String("addr", ":4000", "HTTP network address") //adding flags for the command line
 	dsn := flag.String("dsn", "web:Mysql/pass1@/snippetbox?parseTime=true", "MySQL data source name")
+
+	//debug
+	debug := flag.Bool("debug", false, "Enable debug mode")
 
 	flag.Parse()
 
@@ -64,6 +68,7 @@ func main() {
 
 	//a struct containing the application dependencies
 	app := &application{
+		debug:          *debug,
 		errorLog:       errorLog,
 		infoLog:        infoLog,
 		snippets:       &models.SnippetModel{DB: db},
