@@ -1,6 +1,6 @@
 -- create the user
 -- CREATE USER 'web'@'localhost';
--- # this is to create a user that can connect from any host, choose this method for container to guarantee a connection
+-- this is to create a user that can connect from any host, choose this method for container to guarantee a connection
 CREATE USER 'web'@'%';
 
 -- Grant privileges to the user
