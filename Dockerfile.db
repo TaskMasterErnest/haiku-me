@@ -1,4 +1,4 @@
-FROM mysql:latest
+FROM mariadb:latest
 
 # Change ownership of all files in here
 RUN chown -R mysql:root /var/lib/mysql/
