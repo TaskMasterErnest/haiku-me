@@ -20,4 +20,4 @@ COPY --from=builder /app/tls ./tls
 # expose a particular port
 EXPOSE 4000
 # run the binary
-# CMD [ "./main" ]
+CMD [ "./main" ]
