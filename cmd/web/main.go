@@ -33,7 +33,7 @@ type application struct {
 func main() {
 
 	addr := flag.String("addr", ":4000", "HTTP network address") //adding flags for the command line
-	dsn := flag.String("dsn", "web:Mysql/pass1@/snippetbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "web:Mysql/pass1@tcp(db:3306)/snippetbox?parseTime=true", "MySQL data source name")
 
 	//debug
 	debug := flag.Bool("debug", false, "Enable debug mode")
