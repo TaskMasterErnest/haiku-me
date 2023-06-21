@@ -10,8 +10,7 @@ services:
       - "4000:4000"
     depends_on:
       - db
-    restart: always
-    restart_delay: 30s
+    restart: on-failure
 
 # version: '3'
 # services:
@@ -25,7 +24,6 @@ services:
 #     build:
 #       context: .
 #       dockerfile: Dockerfile.app
-#     restart: always
-#     restart_delay: 30s
+#     restart: on-failure
 #     ports:
 #       - 4000:4000
