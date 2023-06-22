@@ -1,11 +1,11 @@
 version: '3'
 services:
   db:
-    image: localhost/maria-db:latest
+    image: maria-db:latest
     ports:
       - "3306:3306"
   app:
-    image: localhost/haiku-app:latest
+    image: haiku-app:latest
     ports:
       - "4000:4000"
     depends_on:
