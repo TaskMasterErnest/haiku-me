@@ -14,12 +14,12 @@ pipeline {
       }
     }
 
-    stage("run application") {
-      steps {
-        echo 'RUNNING AN APPLICATION'
-        sh 'make run'
-      }
-    }
+    // stage("run application") {
+    //   steps {
+    //     echo 'RUNNING AN APPLICATION'
+    //     sh 'make run'
+    //   }
+    // }
 
     stage("build database and app images") {
       steps {
