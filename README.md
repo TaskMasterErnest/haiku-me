@@ -8,7 +8,7 @@ To run the application, there will be no need to set up the database, it will be
 ### Run the application
 In this branch, Dockerfiles are available to run to setup the environments.
 For these to work, clone the repo
-1. in to root directory, run `docker build -f Dockerfile.db -t mysql-db:latest --build-arg MYSQL_USER=ernest --build-arg MYSQL_PASSWORD=connect@db1 --build-arg MYSQL_ROOT_PASSWORD=p@ssw0r/d .` to build the MySQL docker image.
+1. in to root directory, run `docker build -f Dockerfile.db -t db:latest --build-arg MYSQL_USER=ernest --build-arg MYSQL_PASSWORD=connect@db1 --build-arg MYSQL_ROOT_PASSWORD=p@ssw0r/d .` to build the MySQL docker image.
 2. run the `docker build -f Dockerfile.app -t app:latest .` to build the Go app image.
 3. start a container from the MySQL image and Go images with the following commands respectively;
 ```
