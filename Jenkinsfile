@@ -28,7 +28,7 @@ pipeline {
             withDockerRegistry(credentialsId: 'docker-creds', url: "") {
               sh 'make build-db'
             }
-          }
+          },
           "Build app image": {
             withDockerRegistry(credentialsId: 'docker-creds', url: "") {
               sh 'make build-app'
