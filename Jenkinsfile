@@ -21,6 +21,31 @@ pipeline {
       }
     }
 
+    stage("build database and app images") {
+      steps {
+        parallel (
+          "Build database image": {
+            withDockerRegistry(credentialsId: 'docker-creds', url: "") {
+              sh 'make build-db'
+            }
+          }
+          "Build app image": {
+            withDockerRegistry(credentialsId: 'docker-creds', url: "") {
+              sh 'make build-app'
+            }
+          }
+        )
+      }
+    }
+
+    stage("run the application") {
+      timeout(time: 2, unit: 'MINUTES') {
+        withDockerRegistry(credentialsId: 'docker-creds', url: "") {
+          sh 'make compose'
+        }
+      }
+    }
+
   }
 
 }
