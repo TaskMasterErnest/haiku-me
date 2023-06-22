@@ -9,4 +9,4 @@ build-db:
 build-app:
 	docker build -f Dockerfile.app -t haiku-app:latest .
 compose:
-	docker-compose -f docker-compose.yml up
+	docker-compose -f docker-compose.yml up --detach
