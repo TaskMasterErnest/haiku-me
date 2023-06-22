@@ -39,11 +39,9 @@ pipeline {
     }
 
     stage("run the application") {
-      timeout(time: 2, unit: 'MINUTES') {
-        steps {
-          withDockerRegistry(credentialsId: 'docker-creds', url: "") {
-            sh 'make compose'
-          }
+      steps {
+        withDockerRegistry(credentialsId: 'docker-creds', url: "") {
+          sh 'make compose'
         }
       }
     }
