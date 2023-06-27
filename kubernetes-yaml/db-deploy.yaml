@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: db
-        image: ernestklu/haikubox:db-v1
+        image: imageName
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ernestklu/haikubox:v1
+        image: imageName
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4000
