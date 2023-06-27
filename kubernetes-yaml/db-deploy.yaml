@@ -22,7 +22,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: db-svc
+  name: db
 spec:
   selector:
     app: db
