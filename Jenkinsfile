@@ -38,11 +38,23 @@ pipeline {
       }
     }
 
-    stage("run the application") {
-      steps {
-        withDockerRegistry(credentialsId: 'docker-creds', url: "") {
-          sh 'make compose'
-        }
+    // stage("run the application") {
+    //   steps {
+    //     withDockerRegistry(credentialsId: 'docker-creds', url: "") {
+    //       sh 'make compose'
+    //     }
+    //   }
+    // }
+
+    stage("Kubernetes - Deploy database") {
+      withKubeConfig(credentialsId: 'kube-config', restrictKubeConfigAccess: false, serverUrl: '') {
+        sh "bash kubernetes-yaml/deploy-db.sh"
+      }
+    }
+
+    stage("Kubernetes - Deploy application") {
+      withKubeConfig(credentialsId: 'kube-config', restrictKubeConfigAccess: false, serverUrl: '') {
+        sh "bash kubernetes-yaml/deploy-app.sh"
       }
     }
 
