@@ -17,9 +17,7 @@ spec:
         image: ernestklu/haikubox:v1
         imagePullPolicy: IfNotPresent
         ports:
-        - protocol: TCP
-          ports:
-          - containerPort: 4000
+        - containerPort: 4000
 ---
 apiVersion: apps/v1
 kind: Service
