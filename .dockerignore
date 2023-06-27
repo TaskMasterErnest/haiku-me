@@ -1,1 +1,4 @@
 database/container
+docker-compose*
+Dockerfile*
+Jenkinsfile
